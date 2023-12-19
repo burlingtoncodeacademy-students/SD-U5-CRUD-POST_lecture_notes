@@ -8,6 +8,7 @@ const db = mongoose.connection;
 
 //* Imports
 const userController = require('./controllers/user.controller');
+const movieController = require('./controllers/movie.controller');
 
 //* Middleware
 mongoose.connect(`${MONGO}/movies`);
@@ -16,6 +17,7 @@ app.use(express.json());
 
 //* Routes
 app.use('/user', userController);
+app.use('/movies', movieController);
 
 app.listen(PORT, () => console.log(`Movie Server: ${PORT}`));
 

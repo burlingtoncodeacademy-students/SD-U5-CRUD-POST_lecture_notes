@@ -1,22 +1,43 @@
 const router = require('express').Router();
 const Movie = require('../models/movie.model');
 
-//TODO Create Movie (POST)
+// Error Response Function
+const errorResponse = (res,err) => {
+    return(
+        res.status(500).json({
+            ERROR: err.message
+        })
+    )
+}
+
+//Create Movie (POST)
 router.post('/', async(req,res) => {
     try {
         
         //1. Pull data from client (body)
+        const {
+            title, genre, rating, length, releaseYear
+        } = req.body;
 
         //2. Create a new object for Schema
-
+        const movie = new Movie({
+            title, genre, rating, length, releaseYear
+        })
+        
         //3. Use mongoose method to save to DB
+        const newMovie = await movie.save();
 
         //4. Respond to client
+        res.status(200).json({
+            result: newMovie,
+            message: `${newMovie.title} added to collection!`
+        })
 
     } catch (err) {
-        res.status(500).json({
-            ERROR: err.message
-        });
+        // res.status(500).json({
+        //     ERROR: err.message
+        // });
+        errorResponse(res, err);
     }
 })
 
